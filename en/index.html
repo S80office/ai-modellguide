@@ -1,0 +1,913 @@
+<style>
+  :root {
+    --bg: #0B0B26;
+    --bg-elevated: #14142c;
+    --bg-card: #17173a;
+    --text: #F5F2E1;
+    --text-muted: #A9A7C9;
+    --border: rgba(255,255,255,0.12);
+    --border-strong: rgba(255,255,255,0.22);
+    --accent: #9795FF;
+    --accent-strong: #B4B2FF;
+    --link: #B4B2FF;
+    --tier1: #55D340;
+    --tier1-bg: rgba(85,211,64,0.14);
+    --tier1-text: #8CE87C;
+    --tier2: #FCB27C;
+    --tier2-bg: rgba(252,178,124,0.14);
+    --tier2-text: #FFC79A;
+    --tier3: #CFCEFF;
+    --tier3-bg: rgba(151,149,255,0.20);
+    --tier3-text: #DEDCFF;
+    --code-bg: rgba(255,255,255,0.06);
+    --shadow: 0 20px 50px -25px rgba(0,0,0,0.6);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #FEFBE6;
+      --bg-elevated: #FFFFFF;
+      --bg-card: #FFFDF3;
+      --text: #14142c;
+      --text-muted: #55536f;
+      --border: rgba(11,11,38,0.12);
+      --border-strong: rgba(11,11,38,0.2);
+      --accent: #5E5BFF;
+      --accent-strong: #4744D9;
+      --link: #4744D9;
+      --tier1: #2F8F22;
+      --tier1-bg: rgba(47,143,34,0.10);
+      --tier1-text: #1F6B18;
+      --tier2: #B8622A;
+      --tier2-bg: rgba(184,98,42,0.10);
+      --tier2-text: #8F4C1E;
+      --tier3: #5E5BFF;
+      --tier3-bg: rgba(94,91,255,0.10);
+      --tier3-text: #4744D9;
+      --code-bg: rgba(11,11,38,0.05);
+      --shadow: 0 20px 50px -30px rgba(20,20,44,0.25);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #FEFBE6;
+    --bg-elevated: #FFFFFF;
+    --bg-card: #FFFDF3;
+    --text: #14142c;
+    --text-muted: #55536f;
+    --border: rgba(11,11,38,0.12);
+    --border-strong: rgba(11,11,38,0.2);
+    --accent: #5E5BFF;
+    --accent-strong: #4744D9;
+    --link: #4744D9;
+    --tier1: #2F8F22;
+    --tier1-bg: rgba(47,143,34,0.10);
+    --tier1-text: #1F6B18;
+    --tier2: #B8622A;
+    --tier2-bg: rgba(184,98,42,0.10);
+    --tier2-text: #8F4C1E;
+    --tier3: #5E5BFF;
+    --tier3-bg: rgba(94,91,255,0.10);
+    --tier3-text: #4744D9;
+    --code-bg: rgba(11,11,38,0.05);
+    --shadow: 0 20px 50px -30px rgba(20,20,44,0.25);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B0B26;
+    --bg-elevated: #14142c;
+    --bg-card: #17173a;
+    --text: #F5F2E1;
+    --text-muted: #A9A7C9;
+    --border: rgba(255,255,255,0.12);
+    --border-strong: rgba(255,255,255,0.22);
+    --accent: #9795FF;
+    --accent-strong: #B4B2FF;
+    --link: #B4B2FF;
+    --tier1: #55D340;
+    --tier1-bg: rgba(85,211,64,0.14);
+    --tier1-text: #8CE87C;
+    --tier2: #FCB27C;
+    --tier2-bg: rgba(252,178,124,0.14);
+    --tier2-text: #FFC79A;
+    --tier3: #CFCEFF;
+    --tier3-bg: rgba(151,149,255,0.20);
+    --tier3-text: #DEDCFF;
+    --code-bg: rgba(255,255,255,0.06);
+    --shadow: 0 20px 50px -25px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin-bottom: 1.25rem;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-strong);
+    display: inline-block;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 300;
+    line-height: 1.05;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .compass-icon { flex: none; }
+  .subhead {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 42rem;
+    margin: 0 0 1.75rem;
+    text-wrap: balance;
+  }
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .meta-bar strong { color: var(--text); font-weight: 400; }
+
+  section { margin-bottom: 4rem; }
+  h2 {
+    font-size: 1.7rem;
+    font-weight: 300;
+    margin: 0 0 1.25rem;
+    text-wrap: balance;
+  }
+  .section-num {
+    font-size: 0.8rem;
+    color: var(--accent-strong);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  p { max-width: 42rem; }
+  .lede {
+    font-size: 1.2rem;
+    font-weight: 400;
+    max-width: 40rem;
+    margin: 0 0 1.5rem;
+    text-wrap: balance;
+  }
+  .principles {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+    max-width: 42rem;
+  }
+  .principles li {
+    padding-left: 1.4rem;
+    position: relative;
+    color: var(--text-muted);
+  }
+  .principles li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.55em;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .principles strong { color: var(--text); font-weight: 400; }
+
+  /* Quiz */
+  .quiz {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+  }
+  .quiz-q { margin-bottom: 1.75rem; }
+  .quiz-q:last-of-type { margin-bottom: 0; }
+  .quiz-q-title {
+    font-weight: 400;
+    font-size: 1.02rem;
+    margin-bottom: 0.9rem;
+  }
+  .quiz-options {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .quiz-option {
+    display: block;
+    cursor: pointer;
+  }
+  .quiz-option input { position: absolute; opacity: 0; pointer-events: none; }
+  .quiz-option-label {
+    display: block;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .quiz-option input:checked + .quiz-option-label {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(151,149,255,0.08);
+  }
+  .quiz-option input:focus-visible + .quiz-option-label {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .quiz-result {
+    margin-top: 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    flex-wrap: wrap;
+  }
+  .quiz-result-badge {
+    font-size: 0.85rem;
+    font-weight: 400;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .quiz-result-text { color: var(--text-muted); font-size: 0.95rem; flex: 1; min-width: 14rem; }
+  .quiz-result-text strong { color: var(--text); font-weight: 400; }
+
+  /* Tier cards */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+  }
+  @media (max-width: 720px) {
+    .tier-grid { grid-template-columns: 1fr; }
+  }
+  .tier-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--tier-color);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .tier-card.t1 { --tier-color: var(--tier1); }
+  .tier-card.t2 { --tier-color: var(--tier2); }
+  .tier-card.t3 { --tier-color: var(--tier3); }
+  .tier-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .tier-card.t1 .tier-label { color: var(--tier1-text); }
+  .tier-card.t2 .tier-label { color: var(--tier2-text); }
+  .tier-card.t3 .tier-label { color: var(--tier3-text); }
+  .tier-name { font-size: 1.25rem; font-weight: 400; margin: 0; }
+  .tier-thesis { font-size: 0.92rem; color: var(--text-muted); margin: 0; }
+  .tier-block-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin: 0.4rem 0 0.3rem; }
+  .tier-list { margin: 0; padding-left: 1.1rem; font-size: 0.88rem; color: var(--text-muted); }
+  .tier-list li { margin-bottom: 0.25rem; }
+  .tier-avoid { font-size: 0.85rem; color: var(--text-muted); font-style: normal; border-top: 1px solid var(--border); padding-top: 0.7rem; margin-top: auto; }
+
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--bg-card);
+    border-radius: 0 14px 14px 0;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.5rem;
+    max-width: 42rem;
+  }
+  .callout-title {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-strong);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+  .callout p { font-size: 0.92rem; color: var(--text-muted); margin: 0; }
+  .callout p + p { margin-top: 0.6rem; }
+  .callout strong { color: var(--text); font-weight: 400; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 640px; }
+  thead th {
+    text-align: left;
+    padding: 0.9rem 1.1rem;
+    background: var(--bg-elevated);
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody td {
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .model-name { font-weight: 400; color: var(--text); display: block; }
+  .model-price {
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, monospace;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    display: block;
+    margin-top: 0.2rem;
+  }
+  .tier-chip {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 400;
+  }
+  .tier-chip.t1 { background: var(--tier1-bg); color: var(--tier1-text); }
+  .tier-chip.t2 { background: var(--tier2-bg); color: var(--tier2-text); }
+  .tier-chip.t3 { background: var(--tier3-bg); color: var(--tier3-text); }
+  .price-note { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.8rem; }
+  .provider-cell { display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-start; }
+  .product-tag { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* Role cards */
+  .role-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+  }
+  @media (max-width: 720px) {
+    .role-grid { grid-template-columns: 1fr; }
+  }
+  .role-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem;
+  }
+  .role-card h3 { font-size: 1.05rem; font-weight: 400; margin: 0 0 0.2rem; }
+  .role-tagline { font-size: 0.85rem; color: var(--accent-strong); margin: 0 0 0.9rem; }
+  .role-card ul { margin: 0; padding-left: 1.1rem; font-size: 0.9rem; color: var(--text-muted); }
+  .role-card li { margin-bottom: 0.5rem; }
+  .role-card li strong { color: var(--text); font-weight: 400; }
+
+  /* Maintenance section */
+  .maint-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+  }
+  @media (max-width: 720px) { .maint-grid { grid-template-columns: 1fr; } }
+  .maint-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem;
+  }
+  .maint-card h3 { font-size: 1rem; font-weight: 400; margin: 0 0 0.6rem; }
+  .maint-card p, .maint-card ul { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+  .maint-card ul { padding-left: 1.1rem; }
+  .maint-card li { margin-bottom: 0.4rem; }
+  code {
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, monospace;
+    font-size: 0.85em;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 1.75rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  footer a { color: var(--link); }
+  footer ul { padding-left: 1.1rem; margin: 0.6rem 0 1.2rem; }
+  footer li { margin-bottom: 0.3rem; }
+
+  a { color: var(--link); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .quiz-option-label { transition-duration: 0.15s; }
+  }
+
+  .lang-switch {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 50;
+    display: flex;
+    gap: 0.3rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.35rem;
+    box-shadow: var(--shadow);
+  }
+  .lang-flag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 50%;
+    font-size: 1.15rem;
+    line-height: 1;
+    text-decoration: none;
+    opacity: 0.4;
+    filter: grayscale(0.65);
+    transition: opacity 0.15s ease, background 0.15s ease, filter 0.15s ease;
+  }
+  .lang-flag:hover:not(.is-active) {
+    opacity: 0.8;
+    filter: grayscale(0.1);
+    background: var(--code-bg);
+  }
+  .lang-flag.is-active {
+    opacity: 1;
+    filter: none;
+    background: rgba(151,149,255,0.18);
+    cursor: default;
+    pointer-events: none;
+  }
+  @media (max-width: 480px) {
+    .lang-switch { top: 0.75rem; right: 0.75rem; padding: 0.25rem; }
+    .lang-flag { width: 1.85rem; height: 1.85rem; font-size: 1rem; }
+  }
+</style>
+
+<div class="lang-switch">
+  <a class="lang-flag" href="../" title="Svenska" aria-label="Svenska">🇸🇪</a>
+  <span class="lang-flag is-active" aria-current="true" title="English" aria-label="English">🇬🇧</span>
+</div>
+
+<div class="page">
+
+  <div class="eyebrow">AI &amp; AI-Assisted Development · Internal Guide, Knowit</div>
+  <h1>
+    <svg class="compass-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="20" cy="20" r="18" stroke="var(--accent)" stroke-width="1.5"/>
+      <path d="M26 14L17 17L14 26L23 23L26 14Z" fill="var(--tier2)" stroke="var(--tier2)" stroke-linejoin="round"/>
+      <path d="M20 17L23 23L17 17L20 17Z" fill="var(--tier1)"/>
+      <circle cx="20" cy="20" r="1.6" fill="var(--text)"/>
+    </svg>
+    The Model Compass
+  </h1>
+  <p class="subhead">The right AI model for the right task — not the one you're used to, not the priciest one. The one that's enough, at the lowest cost for the right result.</p>
+
+  <div class="meta-bar">
+    <span>Last verified: <strong>August 17, 2026</strong></span>
+    <span>Owner: <strong>AI Lead function</strong></span>
+    <span>Covers: <strong>Claude · GPT · Gemini</strong></span>
+  </div>
+
+  <section>
+    <span class="section-num">01 — The core thesis</span>
+    <h2>Model choice isn't one decision — it's three</h2>
+    <p class="lede">Match the model's <strong>weight</strong> to the task's <strong>complexity</strong> and the <strong>consequence of a mistake</strong>. Never habit, never "whichever one happens to be open".</p>
+    <ul class="principles">
+      <li><strong>Start low, escalate on friction.</strong> If the model misses the same type of task twice, switch tiers — don't keep rewording the same prompt forever.</li>
+      <li><strong>Cost is measured per correct answer, not per call.</strong> A cheap model that has to be re-run three times costs more than a pricier model that gets it right on the first try.</li>
+      <li><strong>Tier comes before provider.</strong> Decide whether the task is fast/cheap, balanced, or frontier — then pick Claude, GPT, or Gemini based on what you've already procured and which tools they're integrated into.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="section-num">02 — Quick test</span>
+    <h2>Which tier does your task need?</h2>
+    <p style="color:var(--text-muted); margin-top:-0.75rem;">Answer three questions about the task in front of you.</p>
+
+    <div class="quiz">
+      <div class="quiz-q">
+        <div class="quiz-q-title">1. How complex is the reasoning required?</div>
+        <div class="quiz-options">
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="1" checked>
+            <span class="quiz-option-label">Simple — pattern matching, formatting, summarizing, classification</span>
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="2">
+            <span class="quiz-option-label">Moderate — standard code, requirements text, structured analysis</span>
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="3">
+            <span class="quiz-option-label">Complex — multi-step reasoning, architecture, conflicting or unclear requirements</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <div class="quiz-q-title">2. What does it cost if the model gets it wrong?</div>
+        <div class="quiz-options">
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="1" checked>
+            <span class="quiz-option-label">Little — visible immediately, fixed in seconds, no external impact</span>
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="2">
+            <span class="quiz-option-label">Moderate — goes through review or code review before it has any effect</span>
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="3">
+            <span class="quiz-option-label">A lot — production, customers, security, legal, or money directly affected</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <div class="quiz-q-title">3. Volume and pace?</div>
+        <div class="quiz-options">
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="1" checked>
+            <span class="quiz-option-label">High volume / needs to be fast and cheap per call</span>
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="2">
+            <span class="quiz-option-label">Normal interactive use</span>
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="3">
+            <span class="quiz-option-label">One-off, rare, important occasion</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="quiz-result">
+        <span id="quizBadge" class="quiz-result-badge tier-chip t1">Tier 1 — Fast &amp; Cheap</span>
+        <span id="quizText" class="quiz-result-text">Based on your answers, the fastest and cheapest tier is enough.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-num">03 — The three tiers</span>
+    <h2>Think in three modes, not model names</h2>
+    <div class="tier-grid">
+      <div class="tier-card t1">
+        <span class="tier-label">Tier 1</span>
+        <h3 class="tier-name">Fast &amp; Cheap</h3>
+        <p class="tier-thesis">Routine, high volume, low risk, latency-sensitive.</p>
+        <div class="tier-block-title">Use for</div>
+        <ul class="tier-list">
+          <li>Summaries &amp; classification</li>
+          <li>Autocomplete, boilerplate code</li>
+          <li>Formatting, simple rewrites</li>
+          <li>Chatbots with bounded answers</li>
+        </ul>
+        <div class="tier-avoid">Avoid for: multi-step reasoning, code that goes straight to production without review.</div>
+      </div>
+      <div class="tier-card t2">
+        <span class="tier-label">Tier 2</span>
+        <h3 class="tier-name">Balanced</h3>
+        <p class="tier-thesis">The default mode for most day-to-day work.</p>
+        <div class="tier-block-title">Use for</div>
+        <ul class="tier-list">
+          <li>Daily coding, refactoring, debugging</li>
+          <li>Requirements analysis, user stories, test cases</li>
+          <li>Content headed for review</li>
+          <li>Most agentic tasks</li>
+        </ul>
+        <div class="tier-avoid">Avoid for: high-stakes architecture decisions, very long or contradictory context.</div>
+      </div>
+      <div class="tier-card t3">
+        <span class="tier-label">Tier 3</span>
+        <h3 class="tier-name">Frontier / Max</h3>
+        <p class="tier-thesis">High complexity or high consequence of error — rare, but important.</p>
+        <div class="tier-block-title">Use for</div>
+        <ul class="tier-list">
+          <li>Architecture decisions and hard-to-pin-down bugs in tightly coupled code</li>
+          <li>Security-critical or legally sensitive code/text</li>
+          <li>Long agentic workflows with many steps</li>
+          <li>Strategic documents with wide reach</li>
+        </ul>
+        <div class="tier-avoid">Avoid for: high-volume, low-risk tasks — a waste of money and latency.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Common trap</div>
+      <p><strong>Codebase size is not the same thing as complexity.</strong> A large but modular codebase where the task only touches one well-scoped part rarely needs Tier 3 — what actually drives the tier up is how tightly coupled the code is: hidden dependencies, unclear boundaries, side effects that are hard to verify. A small but tangled legacy module can be Tier 3 even when a huge, well-structured monorepo service isn't.</p>
+      <p>If the task needs a lot of code loaded in <em>at once</em> (e.g. a repo-wide migration), that's mainly a context-window and workflow question, not raw model power. Split the work per module across several Tier 2 calls instead of automatically reaching for the most expensive model.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-num">04 — Across providers</span>
+    <h2>Same tier, three providers</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Anthropic (Claude)</th>
+            <th>OpenAI (GPT)</th>
+            <th>Google (Gemini)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tier-chip t1">Tier 1</span></td>
+            <td><span class="model-name">Haiku 4.5</span><span class="model-price">~$1 / $5 per M tokens</span></td>
+            <td><span class="model-name">GPT-5.6 Luna</span><span class="model-price">~$1 / $6 per M tokens</span></td>
+            <td><span class="model-name">Gemini 3.5 Flash-Lite</span><span class="model-price">~$0.30 / $2.50 per M tokens</span></td>
+          </tr>
+          <tr>
+            <td><span class="tier-chip t2">Tier 2</span></td>
+            <td><span class="model-name">Sonnet 5</span><span class="model-price">~$2 / $10 per M tokens</span></td>
+            <td><span class="model-name">GPT-5.6 Terra</span><span class="model-price">~$2.50 / $15 per M tokens</span></td>
+            <td><span class="model-name">Gemini 3.1 Pro</span><span class="model-price">~$2 / $12 per M tokens</span></td>
+          </tr>
+          <tr>
+            <td><span class="tier-chip t3">Tier 3</span></td>
+            <td><span class="model-name">Opus 5 · Fable 5</span><span class="model-price">~$5/$25 · ~$10/$50 per M tokens</span></td>
+            <td><span class="model-name">GPT-5.6 Sol</span><span class="model-price">~$5 / $30 per M tokens</span></td>
+            <td><span class="model-name">Gemini 3.1 Pro (top of the line)</span><span class="model-price">same as Tier 2 — Google has no frontier tier above Pro right now</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="price-note">Prices are approximate (input/output per million tokens), pulled from third-party price trackers in August 2026 — they move often. Use the table to understand <em>relative</em> cost between tiers, and verify exact numbers against the providers' official pricing pages (links below) before making volume decisions.</p>
+  </section>
+
+  <section>
+    <span class="section-num">05 — Strengths</span>
+    <h2>Tier tells you how much power — this tells you what kind</h2>
+    <p class="lede" style="font-size:1.05rem;">The tiers in section 03 are about <strong>how much</strong> model a task needs. Providers have also built different <strong>kinds</strong> of strength, regardless of tier — that determines who you pick, not just how powerful.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Task type</th>
+            <th>Strongest today</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="model-name">Code &amp; agentic developer workflows</span></td>
+            <td><div class="provider-cell"><span class="tier-chip t3">Claude</span><span class="product-tag">Product: Claude Code</span></div></td>
+            <td>Leads coding benchmarks, most precise tool calls, and lowest variance across long agentic runs — matters most in CI-like automation that runs over and over. Claude Code is built specifically for this: terminal-native, agentic, integrated into the developer's own tools.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Document- &amp; text-heavy analysis</span></td>
+            <td><div class="provider-cell"><span class="tier-chip t3">Claude</span><span class="product-tag">Product: Claude Cowork</span></div></td>
+            <td>Genuinely uses large context windows without losing detail midway — hundreds of pages or images in a single call. Claude Cowork packages this for non-technical users: research, document analysis, and multi-step tasks connected to Google Drive, Gmail, DocuSign, and more.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Image &amp; video understanding</span></td>
+            <td><div class="provider-cell"><span class="tier-chip t2">Gemini</span></div></td>
+            <td>Multimodality built in from the ground up rather than bolted on afterward — reads video, audio, and image simultaneously and keeps long clips coherent over time.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Image generation</span></td>
+            <td><div class="provider-cell"><span class="tier-chip t1">GPT</span><span class="product-tag">Product: ChatGPT / gpt-image-2</span><span class="tier-chip t2" style="margin-top:0.5rem;">Gemini</span><span class="product-tag">Product: Nano Banana Pro</span></div></td>
+            <td>A shared lead, not a single winner. <strong>GPT Image</strong> is ahead on text-in-image, diagrams, and UI layouts with exact placement. <strong>Gemini (Nano Banana Pro)</strong> is ahead on photorealism, materials, and product shots — and can ground images in web search to get real-world subjects right.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Voice &amp; real-time conversation</span></td>
+            <td><div class="provider-cell"><span class="tier-chip t1">GPT</span><span class="product-tag">Product: ChatGPT Voice / GPT-Live</span></div></td>
+            <td>Full-duplex voice models built to listen and speak at the same time — best for voice assistants and call-center-style flows.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Search, currency &amp; Workspace</span></td>
+            <td><div class="provider-cell"><span class="tier-chip t2">Gemini</span><span class="product-tag">Product: Gemini in Google Workspace</span></div></td>
+            <td>Most deeply tied to Google Search and Workspace (Docs, Sheets, Gmail, Meet) — good when the work already lives there.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Extremely large context needs</span></td>
+            <td><div class="provider-cell"><span class="tier-chip t2">Gemini</span></div></td>
+            <td>Context windows up to 1–2 million tokens even at lower price tiers — most tokens per dollar for long documents or video.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="price-note">A snapshot as of August 2026 — providers often catch up with each other on individual points within a few months. Use the table to pick a direction, not as a permanent verdict.</p>
+
+    <div class="role-grid" style="margin-top: 2rem;">
+      <div class="role-card">
+        <h3>Anthropic — Claude</h3>
+        <p class="role-tagline">Reliability in long, agentic workflows</p>
+        <ul>
+          <li><strong>Low variance</strong> across repeated runs — important for automated pipelines and unattended agent workflows.</li>
+          <li><strong>Deepest integration</strong> through a dedicated product pair for different roles — Claude Code for developers, Claude Cowork for non-technical knowledge workers — a shorter path from model to actual work than a general chat window.</li>
+          <li><strong>Strong safety/compliance profile</strong>, often the first choice in regulated industries.</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <h3>OpenAI — GPT</h3>
+        <p class="role-tagline">Broadest ecosystem, fastest with new modalities</p>
+        <ul>
+          <li><strong>Largest third-party ecosystem</strong> (GPTs, plugins, connectors) and an established Azure procurement path.</li>
+          <li><strong>Often first to production</strong> with new modalities — voice, image, and video in the same interface.</li>
+          <li><strong>Strong generalist</strong> when a task mixes several modalities in one flow.</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <h3>Google — Gemini</h3>
+        <p class="role-tagline">Most context per dollar, deepest into Workspace</p>
+        <ul>
+          <li><strong>Multimodality built in</strong> from the ground up — not added later.</li>
+          <li><strong>Largest context window relative to price</strong> — good for long documents, code repos, or video material.</li>
+          <li><strong>The natural choice</strong> when data and tools already live in Google Workspace/Cloud or need grounding in Search.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="font-size:1.15rem; font-weight:400; margin: 2.75rem 0 0.5rem;">Deep dive: Claude Code vs. ChatGPT Codex</h3>
+    <p style="color:var(--text-muted); font-size:0.95rem; max-width:42rem; margin:0 0 1.25rem;">This question comes up often, specifically about the two leading coding agents. Neither wins outright — they're built for different ways of working.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Claude Code</th>
+            <th>ChatGPT Codex</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="model-name">Where the code runs</span></td>
+            <td>Runs locally in your terminal, reads the filesystem directly — code never leaves your machine. Matters under NDA or with proprietary code.</td>
+            <td>Cloud sandboxes by default (a CLI exists too) — good for asynchronous tasks you hand off.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Strength</span></td>
+            <td>Code quality and repo-wide refactors — rated cleaner in blind comparisons in most cases.</td>
+            <td>Speed, autonomy on terminal tasks, and token efficiency per task.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Context window</span></td>
+            <td>Up to 1M tokens.</td>
+            <td>200K tokens.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Multiple agents at once</span></td>
+            <td>Agent Teams — several agents share a task list and talk to each other.</td>
+            <td>Up to 8 parallel subagents in isolated cloud sandboxes.</td>
+          </tr>
+          <tr>
+            <td><span class="model-name">Pick this when</span></td>
+            <td>Hard multi-file refactors, deep IDE integration, code that can't leave the machine.</td>
+            <td>Async PRs, sandboxed execution, per-task cost is the deciding factor.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top:1.5rem;">
+      <div class="callout-title">More tools in the landscape</div>
+      <p>The model is the engine — the tool wrapped around it decides how the work actually feels. Beyond Claude Code and Codex, there's also: <strong>AI IDEs</strong> (Cursor, GitHub Copilot in VS Code/JetBrains) that pull context from open files in the editor; <strong>more CLI agents</strong> (Gemini CLI) that, like Claude Code and Codex CLI, work close to the terminal against your own codebase; <strong>cloud-based/asynchronous agents</strong> (Google Jules, GitHub Copilot's cloud agent, Devin) where you hand off a ticket and get back a finished pull request; and <strong>open-source alternatives</strong> (OpenCode, Aider) for teams that want to own the infrastructure or switch models freely.</p>
+      <p>Regardless of tool: keep project instructions in an <code>AGENTS.md</code> or <code>CLAUDE.md</code> at the repo root. The format is now shared across most agents — the instructions carry over no matter which tool a developer picks.</p>
+      <p><strong>One exception worth noting: GitHub Copilot is no longer its own model family.</strong> Since Copilot got model selection, users can pick Claude (Opus/Sonnet/Haiku), GPT, or Gemini from the model menu, depending on their Copilot plan — the same tier logic from the rest of this guide applies there too, just embedded in a dropdown instead of a tool switch. Since June 2026 it bills per token converted into "AI credits" (1 credit = $0.01), gated by the plan's quota.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-num">06 — By role</span>
+    <h2>Same compass, different vantage point</h2>
+    <div class="role-grid">
+      <div class="role-card">
+        <h3>Manager / Lead</h3>
+        <p class="role-tagline">Steer with policy, not individual calls</p>
+        <ul>
+          <li><strong>Set Tier 2 as the org default.</strong> Require a short justification for Tier 3 at volume — not for one-off cases.</li>
+          <li><strong>Encourage Tier 1</strong> for internal tools, batch jobs, and automation where no one reads every answer.</li>
+          <li><strong>Track cost per model tier quarterly</strong>, not just total spend — it shows where the team is over- or under-escalating.</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <h3>Developer</h3>
+        <p class="role-tagline">Escalate on friction, not habit</p>
+        <ul>
+          <li><strong>Tier 1:</strong> autocomplete, boilerplate, simple rewrites.</li>
+          <li><strong>Tier 2:</strong> the default for daily coding, debugging, refactoring.</li>
+          <li><strong>Tier 3:</strong> architecture, hard bugs, large context, agentic workflows with many dependencies. Two failed attempts at Tier 2 = switch tiers, not prompts.</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <h3>PM / Business Analyst / PO</h3>
+        <p class="role-tagline">Choose by use case, not model name</p>
+        <ul>
+          <li><strong>Tier 1:</strong> meeting notes, summaries, status updates.</li>
+          <li><strong>Tier 2:</strong> requirements writing, user stories, structured stakeholder analysis.</li>
+          <li><strong>Tier 3:</strong> strategic documents, complex stakeholder analysis, or decision material with wide reach and consequence.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-num">07 — Keeping it current</span>
+    <h2>Models change every month. The principles don't.</h2>
+    <p class="lede" style="font-size:1.05rem;">Separate what's stable from what's volatile — otherwise the whole guide goes stale every time a provider ships a new model.</p>
+    <div class="maint-grid">
+      <div class="maint-card">
+        <h3>Stable — rarely changes</h3>
+        <ul>
+          <li>The core thesis and the three questions (complexity, consequence, volume)</li>
+          <li>The three tiers and what they mean</li>
+          <li>The role guides (Manager / Developer / PM)</li>
+        </ul>
+      </div>
+      <div class="maint-card">
+        <h3>Volatile — needs a cadence</h3>
+        <ul>
+          <li>The table in section 04 (model names and pricing)</li>
+          <li>The strengths table in section 05 — who leads at what changes at least as often as price</li>
+          <li>Owner: a named person with a recurring calendar reminder — not "someone should do this"</li>
+          <li>Cadence: on every major model release from Anthropic, OpenAI, or Google, otherwise quarterly</li>
+        </ul>
+      </div>
+      <div class="maint-card">
+        <h3>Design out hardcoding in tooling</h3>
+        <p>Reference <code>tier-fast</code>, <code>tier-balanced</code>, <code>tier-frontier</code> in internal configs, prompts, and guidelines — not exact model names. When a provider swaps a model, you update a single mapping instead of every place that points at a specific model name.</p>
+      </div>
+      <div class="maint-card">
+        <h3>Trust the source, not the search result</h3>
+        <p>Use the providers' own pricing pages for actual decisions. Third-party trackers (used for the table above) are good for a quick overview, not for procurement or budget.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Official sources to bookmark and check at every update:</p>
+    <ul>
+      <li><a href="https://platform.claude.com/docs/en/about-claude/pricing" target="_blank" rel="noopener">Anthropic — Claude API pricing</a></li>
+      <li><a href="https://openai.com/api/pricing/" target="_blank" rel="noopener">OpenAI — API pricing</a></li>
+      <li><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">Google — Gemini API pricing</a></li>
+    </ul>
+    <p>Model and pricing data in section 04 compiled from third-party price trackers (including CloudZero, BenchLM, aipricing.guru) in August 2026 — approximate figures, not official list prices.</p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    const tierMeta = {
+      1: { badgeClass: 'tier-chip t1', label: 'Tier 1 — Fast & Cheap', text: 'Based on your answers, the fastest and cheapest tier is enough. Save money and latency here.' },
+      2: { badgeClass: 'tier-chip t2', label: 'Tier 2 — Balanced', text: 'The default. A balanced model handles this without over- or under-investing.' },
+      3: { badgeClass: 'tier-chip t3', label: 'Tier 3 — Frontier / Max', text: 'Complexity or the cost of a mistake is high enough to justify the strongest tier.' }
+    };
+    const badge = document.getElementById('quizBadge');
+    const text = document.getElementById('quizText');
+    function recompute() {
+      const names = ['q1', 'q2', 'q3'];
+      let maxTier = 1;
+      names.forEach(function (name) {
+        const checked = document.querySelector('input[name="' + name + '"]:checked');
+        if (checked) {
+          const v = parseInt(checked.value, 10);
+          if (v > maxTier) maxTier = v;
+        }
+      });
+      const meta = tierMeta[maxTier];
+      badge.className = 'quiz-result-badge ' + meta.badgeClass;
+      badge.textContent = meta.label;
+      text.textContent = meta.text;
+    }
+    document.querySelectorAll('.quiz input[type="radio"]').forEach(function (input) {
+      input.addEventListener('change', recompute);
+    });
+    recompute();
+  })();
+</script>
